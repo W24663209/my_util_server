@@ -1,0 +1,102 @@
+{
+  "VARCHAR": [
+    "VARCHAR",
+    "String",
+    "java.lang.String"
+  ],
+  "CHAR": [
+    "CHAR",
+    "String",
+    "java.lang.String"
+  ],
+  "BLOB": [
+    "BLOB",
+    "byte[]",
+    "java.lang.byte[]"
+  ],
+  "TEXT": [
+    "TEXT",
+    "String",
+    "java.lang.String"
+  ],
+  "INTEGER": [
+    "INTEGER",
+    "Long",
+    "java.lang.Long"
+  ],
+  "TINYINT": [
+    "TINYINT",
+    "Integer",
+    "java.lang.Integer"
+  ],
+  "BOOLEAN": [
+    "BOOLEAN",
+    "Integer",
+    "java.lang.Integer"
+  ],
+  "SMALLINT": [
+    "SMALLINT",
+    "Integer",
+    "java.lang.Integer"
+  ],
+  "MEDIUMINT": [
+    "MEDIUMINT",
+    "Integer",
+    "java.lang.Integer"
+  ],
+  "BIT": [
+    "BIT",
+    "Boolean",
+    "java.lang.Boolean"
+  ],
+  "BIGINT": [
+    "BIGINT",
+    "BigInteger",
+    "java.lang.Long"
+  ],
+  "FLOAT": [
+    "FLOAT",
+    "Float",
+    "java.lang.Float"
+  ],
+  "DOUBLE": [
+    "DOUBLE",
+    "Double",
+    "java.lang.Double"
+  ],
+  "DECIMAL": [
+    "DECIMAL",
+    "BigDecimal",
+    "java.math.BigDecimal"
+  ],
+  "ID": [
+    "ID",
+    "Long",
+    "java.lang.Long"
+  ],
+  "DATE": [
+    "DATE",
+    "Date",
+    "java.util.Date"
+  ],
+  "TIME": [
+    "TIME",
+    "Date",
+    "java.util.Date"
+  ],
+  "DATETIME": [
+    "DATETIME",
+    "Date",
+    "java.util.Date"
+  ],
+  "TIMESTAMP": [
+    "TIMESTAMP",
+    "Date",
+    "java.util.Date"
+  ],
+  "YEAR": [
+    "YEAR",
+    "Date",
+    "java.util.Date"
+  ]
+}

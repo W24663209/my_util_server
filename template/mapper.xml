@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxs.persistent.mapper.credit.AccountBookMapper">
+    <resultMap id="BaseResultMap" type="com.cxs.model.entity.credit.AccountBook">
+
+    </resultMap>
+
+    <sql id="Base_Column_List">
+
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+
+    </delete>
+
+    <insert id="insert" parameterType="com.cxs.model.entity.credit.AccountBook">
+
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.cxs.model.entity.credit.AccountBook">
+
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.cxs.model.entity.credit.AccountBook">
+
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.cxs.model.entity.credit.AccountBook">
+
+    </update>
+
+</mapper>
