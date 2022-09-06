@@ -7,7 +7,7 @@
 """
 from flask import Flask, request, json
 import logging
-from util import Util
+from py.util import Util
 
 app = Flask(__name__)
 

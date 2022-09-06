@@ -26,7 +26,7 @@ def create_entity(sql):
     entity_name = None
     entity_import_packages = []
 
-    with open('template/column.json', 'r') as f:
+    with open('../template/column.json', 'r') as f:
         column_types = json.loads(f.read())  # type: dict
     for column in columns:
         type = re.sub('\(.*\)', '', column[2]).upper()

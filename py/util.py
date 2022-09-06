@@ -104,74 +104,76 @@ class Util():
         className = data['className']
         columnName = int(data['columnName'])
         classType = data['classType']
+        document_util = self.document_util()
         if not classType or classType.__eq__('class'):
             className = className[0].upper() + className[1:]
             remark = data['remark']
-            return self.document_to_class_defalut(className, columnName, remark, values)
+            return document_util.document_to_class_defalut(className, columnName, remark, values)
         elif not classType or classType.__eq__('req'):
             className = className[0].upper() + className[1:]
-            return self.document_to_class_req(className, columnName, values)
+            return document_util.document_to_class_req(className, columnName, values)
         else:
-            return self.document_to_class_map(columnName, values)
+            return document_util.document_to_class_map(columnName, values)
 
-    def document_to_class_req(self, className, columnName, values):
-        """
-        生成req赋值
-        :param columnName:
-        :param values:
-        :return:
-        """
-        className += 'Req'
-        template = '%s req = new %s();\n' % (className, className)
-        for value in values:
-            cls = value.split('\t')
-            columnName_ = cls[columnName]
-            get_columnName_ = columnName_[0].upper() + columnName_[1:]
-            template += 'req.set%s("");\n' % self.auto_to_upper(get_columnName_)
-        return template
+    class document_util:
+        def document_to_class_req(self, className, columnName, values):
+            """
+            生成req赋值
+            :param columnName:
+            :param values:
+            :return:
+            """
+            className += 'Req'
+            template = '%s req = new %s();\n' % (className, className)
+            for value in values:
+                cls = value.split('\t')
+                columnName_ = cls[columnName]
+                get_columnName_ = columnName_[0].upper() + columnName_[1:]
+                template += 'req.set%s("");\n' % self.auto_to_upper(get_columnName_)
+            return template
 
-    def document_to_class_map(self, columnName, values):
-        """
-        文档转map
-        :param className:
-        :param columnName:
-        :param remark:
-        :param values:
-        :return:
-        """
-        template = 'ConcurrentHashMap<String,String> map = new ConcurrentHashMap<>();\n'
-        for value in values:
-            cls = value.split('\t')
-            columnName_ = cls[columnName]
-            get_columnName_ = columnName_[0].upper() + columnName_[1:]
-            template += '%s\n' % 'map.put("%s",%s());' % (columnName_, 'req.get%s' % get_columnName_)
-        return template
+        def document_to_class_map(self, columnName, values):
+            """
+            文档转map
+            :param className:
+            :param columnName:
+            :param remark:
+            :param values:
+            :return:
+            """
+            template = 'ConcurrentHashMap<String,String> map = new ConcurrentHashMap<>();\n'
+            for value in values:
+                cls = value.split('\t')
+                columnName_ = cls[columnName]
+                get_columnName_ = columnName_[0].upper() + columnName_[1:]
+                template += '%s\n' % 'map.put("%s",%s());' % (columnName_, 'req.get%s' % get_columnName_)
+            return template
 
-    def document_to_class_defalut(self, className, columnName, remark, values):
-        """
-        文档转class
-        :param className:
-        :param columnName:
-        :param remark:
-        :param values:
-        :return:
-        """
-        template = self.read_template('template/doc_to_entiry.java')
-        template = template.replace('${className}', className)
-        template = template.replace('${time}', self.get_time())
-        columnName_template = re.findall('<columnName>([\s\S]*?)</columnName>', template)[0]
-        columnName_str = []
-        for value in values:
-            cls = value.split('\t')
-            columnName_ = self.auto_to_upper(cls[columnName])
-            if remark.__contains__(':'):
-                remark_ = ','.join(cls[int(remark.replace(':', '')):])
-            else:
-                remark_ = ','.join(cls[int(remark):])
-            columnName_str.append(
-                columnName_template.replace('${remark}', remark_).replace('${columnName}', columnName_))
-        return template.replace(columnName_template, '\n'.join(columnName_str)).replace('<columnName>', '').replace(
-            '</columnName>', '')
+        def document_to_class_defalut(self, className, columnName, remark, values):
+            """
+            文档转class
+            :param className:
+            :param columnName:
+            :param remark:
+            :param values:
+            :return:
+            """
+            template = self.read_template('template/doc_to_entiry.java')
+            template = template.replace('${className}', className)
+            template = template.replace('${time}', self.get_time())
+            columnName_template = re.findall('<columnName>([\s\S]*?)</columnName>', template)[0]
+            columnName_str = []
+            for value in values:
+                cls = value.split('\t')
+                columnName_ = self.auto_to_upper(cls[columnName])
+                if remark.__contains__(':'):
+                    remark_ = ','.join(cls[int(remark.replace(':', '')):])
+                else:
+                    remark_ = ','.join(cls[int(remark):])
+                columnName_str.append(
+                    columnName_template.replace('${remark}', remark_).replace('${columnName}', columnName_))
+            return template.replace(columnName_template, '\n'.join(columnName_str)).replace('<columnName>', '').replace(
+                '</columnName>', '')
 
     def read_template(self, filename):
         """
@@ -213,9 +215,8 @@ class Util():
                 restr += val
         return restr
 
-
-
-
+    def base64_decode(self,value):
+        print(value)
 
 
 if __name__ == '__main__':
