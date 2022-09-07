@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="layui/css/layui.css" media="all">
     <script src="layui/layui.js" charset="utf-8"></script>
-    <script src="layui/jquery-3.5.1.js" charset="utf-8"></script>
+    <script src="js/jquery-3.6.1.min.js" charset="utf-8"></script>
     <!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
 </head>
 
@@ -31,6 +31,12 @@
             备注:<input id="remark">
             类型:<input id="classType">
         </div>
+        <div class="layui-input-block">
+            curl类型
+            <div class="layui-inline" style="width: 235px;">
+                <input name="" placeholder="" class="layui-input" id="curlType">
+            </div>
+        </div>
     </div>
     <div class="layui-form-item layui-form-text">
         <!--    <label class="layui-form-label">普通文本域</label>-->
@@ -45,12 +51,13 @@
     </div>
     <div class="layui-form-item">
         <div class="layui-input-block">
-            <div class="submit layui-btn" value="mybatis_log_to_sql">mysql日志转sql</div>
-            <div class="submit layui-btn" value="get_layui_width">获取layui宽度</div>
-            <div class="submit layui-btn" value="get_search_layui_value">layui生成搜索id</div>
-            <div class="submit layui-btn" value="auto_fields_json">json生成对象</div>
-            <div class="submit layui-btn" value="document_to_class">文档说明转class</div>
-            <div class="submit layui-btn" value="base64_decode">base64解密</div>
+            <div class="submit layui-btn" httpType="py" value="mybatis_log_to_sql">mysql日志转sql</div>
+            <div class="submit layui-btn" httpType="py" value="get_layui_width">获取layui宽度</div>
+            <div class="submit layui-btn" httpType="py" value="get_search_layui_value">layui生成搜索id</div>
+            <div class="submit layui-btn" httpType="py" value="auto_fields_json">json生成对象</div>
+            <div class="submit layui-btn" httpType="py" value="document_to_class">文档说明转class</div>
+            <div class="submit layui-btn" httpType="py" value="base64_decode">base64解密</div>
+            <div class="submit layui-btn" httpType="node" value="toCurl">curl转换</div>
             <div class="layui-btn layui-btn-primary" id="reset">重置</div>
         </div>
     </div>
@@ -59,44 +66,101 @@
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script>
     var layer;
-    layui.use('layer', function () {
+    var dropdown;
+    layui.use(['dropdown', 'util', 'layer', 'table'], function () {
         layer = layui.layer;
+        dropdown = layui.dropdown
     });
     $(function () {
         $(".submit").click(function () {
             var data = JSON.stringify($("#input").val())
-            if ($(this).attr('value') == 'document_to_class') {
-                data = JSON.stringify({'className': $("#className").val(),
+            var method = $(this).attr('value')
+            if (method == 'document_to_class') {
+                data = JSON.stringify({
+                    'className': $("#className").val(),
                     'columnName': $("#columnName").val(),
                     'remark': $("#remark").val(),
                     'classType': $("#classType").val(),
-                    'value': $("#input").val()})
-            }
-            $.ajax({
-                //请求方式
-                type: "POST",
-                //请求的媒体类型
-                contentType: "application/json;charset=UTF-8",
-                //请求地址
-                url: "http://127.0.0.1:9999/util?type=" + $(this).attr('value'),
-                //数据，json字符串
-                data: data,
-                //请求成功
-                success: function (result) {
-                    $("#output").val(result)
-                    copyText(result)
-                },
-                //请求失败，包含具体的错误信息
-                error: function (e) {
-                    console.log(e.status);
-                    console.log(e.responseText);
+                    'value': $("#input").val()
+                })
+            } else if (method == 'toCurl') {
+                if (!$("#curlType").val()) {
+                    layer.msg('未选择转换类型')
                 }
-            });
+                data = JSON.stringify({
+                    'language': $('#curlType').val(),
+                    'value': $("#input").val()
+                })
+            }
+            let httpType = $(this).attr('httpType');
+            if (httpType == 'py') {
+                $.ajax({
+                    //请求方式
+                    type: "POST",
+                    //请求的媒体类型
+                    contentType: "application/json;charset=UTF-8",
+                    //请求地址
+                    url: "http://127.0.0.1:9999/util?type=" + method,
+                    //数据，json字符串
+                    data: data,
+                    //请求成功
+                    success: function (result) {
+                        $("#output").val(result)
+                        copyText(result)
+                    },
+                    //请求失败，包含具体的错误信息
+                    error: function (e) {
+                        console.log(e.status);
+                        console.log(e.responseText);
+                    }
+                });
+            } else if (httpType == 'node') {
+                $.ajax({
+                    //请求方式
+                    type: "POST",
+                    //请求的媒体类型
+                    contentType: "application/json;charset=UTF-8",
+                    //请求地址
+                    url: "http://127.0.0.1:3000?method=" + method,
+                    //数据，json字符串
+                    data: data,
+                    //请求成功
+                    success: function (result) {
+                        $("#output").val(result)
+                        copyText(result)
+                    },
+                    //请求失败，包含具体的错误信息
+                    error: function (e) {
+                        console.log(e.status);
+                        console.log(e.responseText);
+                    }
+                });
+            }
+
         })
         $("#reset").click(function () {
             $("#input").val('')
             $("#output").val('')
         })
+
+
+        //初演示 - 绑定文字
+        dropdown.render({
+            elem: '#curlType',
+            data: [
+                {title: 'toPython', id: 'toPython'},
+                {title: 'toJava', id: 'toJava'},
+                {title: 'toPhp', id: 'toPhp'},
+                {title: 'toNodeRequest', id: 'toNodeRequest'},
+                {title: 'toNodeFetch', id: 'toNodeFetch'},
+                {title: 'toGo', id: 'toGo'},
+                {title: 'toBrowser', id: 'toBrowser'}
+            ]
+            , click: function (obj) {
+                this.elem.val(obj.title);
+            }
+        });
+        $('#curlType').val('toPython')
     })
 
 
