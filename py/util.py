@@ -35,6 +35,7 @@ class Util():
         for value in parameters.replace('Parameters:', '').split(','):
             tmp_value = re.findall('(.*?)\(.*?\)', value)
             value_ = tmp_value[0] if tmp_value.__len__() > 0 else value
+            value_=value_.replace(' ','')
             if value.__contains__('String'):
                 value_ = "\'%s\'" % value_
             elif value.__contains__('Timestamp'):
