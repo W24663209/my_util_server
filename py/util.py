@@ -6,6 +6,7 @@
 @Create: 2020-07-30 23:57
 """
 import datetime
+import decimal
 import re
 import time
 
@@ -35,7 +36,7 @@ class Util():
         for value in parameters.replace('Parameters:', '').split(','):
             tmp_value = re.findall('(.*?)\(.*?\)', value)
             value_ = tmp_value[0] if tmp_value.__len__() > 0 else value
-            value_=value_.replace(' ','')
+            value_ = value_.replace(' ', '')
             if value.__contains__('String'):
                 value_ = "\'%s\'" % value_
             elif value.__contains__('Timestamp'):
@@ -77,7 +78,7 @@ class Util():
         :param value:
         :return:
         """
-        loads = json.loads(value) if type(json.loads(value))==dict else json.loads(value)[0]
+        loads = json.loads(value) if type(json.loads(value)) == dict else json.loads(value)[0]
         keys = loads.keys()
         arr = []
         for key in keys:
@@ -91,7 +92,12 @@ class Util():
                     text += ('\tprivate String %s;' % clo_name)
                 text += ('}')
             else:
-                text += ('private %s %s;' % ("String", key))
+                field_type = 'String'
+                if isinstance(loads[key], int):
+                    field_type = 'Integer'
+                elif isinstance(loads[key], float):
+                    field_type = 'BigDecimal'
+                text += ('private %s %s;' % (field_type, key))
             arr.append(text)
         return '\n'.join(arr)
 
@@ -216,7 +222,7 @@ class Util():
                 restr += val
         return restr
 
-    def base64_decode(self,value):
+    def base64_decode(self, value):
         print(value)
 
 
