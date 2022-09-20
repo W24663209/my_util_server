@@ -90,6 +90,7 @@ class Addon(object):
             'raw_request': raw_request.decode("utf-8"),
             'raw_response': raw_response.decode("utf-8")
         }
+        print(curl_command)
         web_socket_send(json.dumps(data))
 
 
