@@ -1,4 +1,5 @@
 import asyncio
+import json
 
 from websockets import serve
 from websockets.legacy.server import WebSocketServerProtocol
@@ -10,9 +11,9 @@ async def echo(websocket: WebSocketServerProtocol):
     global ws
     if websocket.open:
         ws = websocket
-        await ws.send("连接成功")
+        await ws.send(json.dumps('连接成功'))
     async for message in websocket:
-        await websocket.send(message)
+        await websocket.send(json.dumps(message))
 
 
 def send(mssage):

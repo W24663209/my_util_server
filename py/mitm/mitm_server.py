@@ -87,6 +87,7 @@ class Addon(object):
         raw_response = export.raw_response(flow)
         data = {
             'curl_command': curl_command,
+            'url': flow.request.url,
             'raw_request': raw_request.decode("utf-8"),
             'raw_response': raw_response.decode("utf-8")
         }
