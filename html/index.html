@@ -26,13 +26,19 @@
 <form class="layui-form" action="">
     <div class="layui-form-item layui-form-text">
         <div class="layui-input-block">
-            对象名:<input id="className">
-            字段名:<input id="columnName">
-            备注:<input id="remark">
-            类型:<input id="classType">
+            对象名:
+            <div class="layui-inline" style="width: 235px;">
+                <input name="" placeholder="" class="layui-input" id="className">
+            </div>
+            字段名:<input id="columnName" value="0">
+            备注:<input id="remark" value="1">
+            类型:
+            <div class="layui-inline" style="width: 235px;">
+                <input name="" placeholder="" class="layui-input" id="classType">
+            </div>
         </div>
         <div class="layui-input-block">
-            curl类型
+            curl类型:
             <div class="layui-inline" style="width: 235px;">
                 <input name="" placeholder="" class="layui-input" id="curlType">
             </div>
@@ -163,6 +169,42 @@
             }
         });
         $('#curlType').val('toPython')
+
+
+        dropdown.render({
+            elem: '#className',
+            data: [
+                {title: 'PayInReq', id: 'PayInReq'},
+                {title: 'PayInRes', id: 'PayInRes'},
+                {title: 'QueryPayInReq', id: 'QueryPayInReq'},
+                {title: 'QueryPayInRes', id: 'QueryPayInRes'},
+                {title: 'PayOutReq', id: 'PayOutReq'},
+                {title: 'PayOutRes', id: 'PayOutRes'},
+                {title: 'QueryPayOutReq', id: 'QueryPayOutReq'},
+                {title: 'QueryPayOutRes', id: 'QueryPayOutRes'},
+                {title: 'PayOutCallback', id: 'PayOutCallback'},
+                {title: 'PayInCallback', id: 'PayInCallback'},
+                {title: 'QueryBalanceReq', id: 'QueryBalanceReq'},
+                {title: 'QueryBalanceRes', id: 'QueryBalanceRes'},
+            ]
+            , click: function (obj) {
+                this.elem.val(obj.title);
+            }
+        });
+
+        dropdown.render({
+            elem: '#classType',
+            data: [
+                {title: 'class', id: 'class'},
+                {title: 'map', id: 'map'},
+                {title: 'req', id: 'req'},
+            ]
+            , click: function (obj) {
+                this.elem.val(obj.title);
+            }
+        });
+        $('#classType').val('class')
+
     })
 
 

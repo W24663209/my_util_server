@@ -130,7 +130,6 @@ class Util():
             :param values:
             :return:
             """
-            className += 'Req'
             template = '%s req = new %s();\n' % (className, className)
             for value in values:
                 cls = value.split('\t')
@@ -148,11 +147,16 @@ class Util():
             :param values:
             :return:
             """
-            template = 'ConcurrentHashMap<String,String> map = new ConcurrentHashMap<>();\n'
+            template = 'Map<String,Object> map = new HashMap<>();\n'
             for value in values:
                 cls = value.split('\t')
                 columnName_ = cls[columnName]
-                get_columnName_ = columnName_[0].upper() + columnName_[1:]
+                if columnName_.__contains__('_'):
+                    get_columnName_ = ''
+                    for i, tex in enumerate(columnName_.split("_")):
+                        get_columnName_ += tex[0].upper() + tex[1:]
+                else:
+                    get_columnName_ = columnName_[0].upper() + columnName_[1:]
                 template += '%s\n' % 'map.put("%s",%s());' % (columnName_, 'req.get%s' % get_columnName_)
             return template
 
@@ -182,48 +186,48 @@ class Util():
             return template.replace(columnName_template, '\n'.join(columnName_str)).replace('<columnName>', '').replace(
                 '</columnName>', '')
 
-    def read_template(self, filename):
-        """
-        读取模板
-        :param filename:
-        :return:
-        """
-        with open('%s/%s' % (path, filename), 'r') as f:
-            return f.read()
+        def read_template(self, filename):
+            """"
+            读取模板
+            :param filename:
+            :return:
+            """
+            with open('%s/../%s' % (path, filename), 'r') as f:
+                return f.read()
 
-    def return_data(self, data):
-        """
-        返回数据
-        :param data:
-        :return:
-        """
-        return json.dumps(data).replace('"', '')
+        def return_data(self, data):
+            """
+            返回数据
+            :param data:
+            :return:
+            """
+            return json.dumps(data).replace('"', '')
 
-    def get_time(self, rule="%Y-%m-%d %H:%M:%S"):
-        """
-        获取当前时间
-        :param rule:
-        :return:
-        """
-        return time.strftime(rule, time.localtime())
+        def get_time(self, rule="%Y-%m-%d %H:%M:%S"):
+            """
+            获取当前时间
+            :param rule:
+            :return:
+            """
+            return time.strftime(rule, time.localtime())
 
-    def auto_to_upper(selt, value):
-        """
-        字段自动转大写
-        :param value:
-        :return:
-        """
-        values = value.split('_')
-        restr = ''
-        for i, val in enumerate(values):
-            if i > 0:
-                restr += val.capitalize()
-            else:
-                restr += val
-        return restr
+        def auto_to_upper(selt, value):
+            """
+            字段自动转大写
+            :param value:
+            :return:
+            """
+            values = value.split('_')
+            restr = ''
+            for i, val in enumerate(values):
+                if i > 0:
+                    restr += val.capitalize()
+                else:
+                    restr += val
+            return restr
 
-    def base64_decode(self, value):
-        print(value)
+        def base64_decode(self, value):
+            print(value)
 
 
 if __name__ == '__main__':
