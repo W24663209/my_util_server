@@ -1,6 +1,6 @@
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import io.swagger.annotations.ApiModelProperty;
+import cn.bensun.common.annotation.TableFieldComment;
 import cn.bensun.api.thirdParty.domain.BaseEntity;
 /**
  * @Classname ${className}
@@ -12,7 +12,7 @@ import cn.bensun.api.thirdParty.domain.BaseEntity;
 @Data
 public class ${className}  extends BaseEntity{
     <columnName>
-    @ApiModelProperty(value = "${remark}")
+    @TableFieldComment(value = "${remark}")
     private String ${columnName};
     </columnName>
 }

@@ -15,8 +15,8 @@ import pymysql
 import re
 
 # conn = pymysql.connect(host=“你的数据库地址”, user=“用户名”,password=“密码”,database=“数据库名”,charset=“utf8”)
-db = 'credit'
-con = pymysql.connect(host='192.168.10.200', user='root', password='1234567', database=db, charset='utf8')
+db = 'yd'
+con = pymysql.connect(host='127.0.0.1', user='root', password='123456', database=db, charset='utf8')
 cur = con.cursor()
 
 
@@ -35,5 +35,10 @@ def create_entity(sql):
 
 
 if __name__ == '__main__':
-    create_entity(
-        "select TABLE_NAME,COLUMN_NAME,COLUMN_TYPE,COLUMN_COMMENT from information_schema.COLUMNS where TABLE_NAME='t_user_info'")
+    cur.execute("select COLUMN_NAME,COLUMN_TYPE,COLUMN_COMMENT,IS_NULLABLE,COLUMN_DEFAULT,EXTRA from information_schema.COLUMNS where TABLE_SCHEMA='yd'")
+    columns = cur.fetchall()
+    column_list=[]
+    for column in columns:
+        column_list.append(column)
+    for column in set(column_list):
+        print(column)
